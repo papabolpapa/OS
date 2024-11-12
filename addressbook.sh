@@ -1,8 +1,16 @@
+#!/bin/bash
+
 ADDRESS_BOOK="address_book.txt"
+
 create_address_book() {
-    > $ADDRESS_BOOK
-    echo "Address book created."
+    if [[ -f $ADDRESS_BOOK ]]; then
+        echo "Address book already exists."
+    else
+        > $ADDRESS_BOOK
+        echo "Address book created."
+    fi
 }
+
 view_address_book() {
     if [[ ! -s $ADDRESS_BOOK ]]; then
         echo "Address book is empty."
@@ -11,6 +19,7 @@ view_address_book() {
         cat $ADDRESS_BOOK
     fi
 }
+
 insert_record() {
     echo "Enter Name:"
     read name
@@ -21,6 +30,7 @@ insert_record() {
     echo "$name, $phone, $email" >> $ADDRESS_BOOK
     echo "Record added."
 }
+
 delete_record() {
     echo "Enter the Name of the record to delete:"
     read name
@@ -31,6 +41,7 @@ delete_record() {
         echo "Record not found."
     fi
 }
+
 search_modify_record() {
     echo "Enter the Name of the record to search:"
     read name
@@ -39,7 +50,7 @@ search_modify_record() {
         echo "Do you want to modify this record? (yes/no)"
         read choice
         if [[ "$choice" == "yes" ]]; then
-            delete_record "$name"
+            delete_record
             echo "Enter new Name:"
             read new_name
             echo "Enter new Phone Number:"
@@ -53,6 +64,7 @@ search_modify_record() {
         echo "Record not found."
     fi
 }
+
 while true; do
     echo "Choose an option:"
     echo "1. Create Address Book"
@@ -69,8 +81,6 @@ while true; do
         4) delete_record ;;
         5) search_modify_record ;;
         6) echo "Exiting."; exit ;;
-        *) echo "Invalid option. Please try again." 
-;;
-
-esac
+        *) echo "Invalid option. Please try again." ;;
+    esac
 done
